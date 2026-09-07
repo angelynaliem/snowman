@@ -13,8 +13,8 @@ SNOWMAN_GRAPHIC = [
     '-----------'
 ]
 
-
 def snowman(snowman_word):
+
     """Complete the snowman function
     replace "pass" below with your own code
     It should print 'Congratulations, you win!'
@@ -22,47 +22,61 @@ def snowman(snowman_word):
     'Sorry, you lose! The word was {snowman_word}' if the player loses
     """
 
+    # Create a dictionary to keep track of the status of each letter in the word
     correct_letter_guess_statuses = build_letter_status_dict(snowman_word)
+
+    # Create a new list to keep track of the wrong guesses
     wrong_guesses_list = []
 
+    # Iterate through the word as long as the user has not reached the maximum number of wrong guesses
     while len(wrong_guesses_list) < SNOWMAN_MAX_WRONG_GUESSES:
 
+        # Print the snowman graphic before each user input to remind the user how close they are to winning/losing the game
+        whole_snowman() 
+
+        # Print the word progress to help the user know the length of the word and of any correct guesses
+        print_word_progress_string(snowman_word, correct_letter_guess_statuses)
+
+        # Print the wrong guesses list so user remembers the previously guessed letters that are not in the word
+        print(f"Wrong guesses so far: {wrong_guesses_list}")
+
+        # Get the user input by guessing a letter
         user_input = get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list)
 
+        # Write a conditional if a letter is correct, the correct letter is added to the word progress
         if user_input in correct_letter_guess_statuses:
             print("You guessed a letter in the word!")
             correct_letter_guess_statuses[user_input] = True
-
-        elif(user_input in wrong_guesses_list
-            or (user_input in correct_letter_guess_statuses
-            and correct_letter_guess_statuses[user_input])):
-            print("You have already guessed that letter!")
-
-        else:
-            print(f"The letter {user_input} is not in the word.")
-            wrong_guesses_list.append(user_input)
             print_snowman_graphic(len(wrong_guesses_list))
 
-        print_word_progress_string(snowman_word, correct_letter_guess_statuses)
+        # Part of the condition, if the letter is not correct, the wrong letter is added to the wrong guesses list
+        else:
+            print("Uh oh, summer is coming!")
+            wrong_guesses_list.append(user_input)
+            print_snowman_graphic(len(wrong_guesses_list))
+            print(f"The letter {user_input} is not in the word.")
 
-        if is_word_guessed(snowman_word, correct_letter_guess_statuses):
+        # Print the wrong guess list and closing message if the user fails to guess the word and reaches the maximum number of guesses 
+        if len(wrong_guesses_list) >= SNOWMAN_MAX_WRONG_GUESSES:
             print(f"Wrong guesses: {wrong_guesses_list}")
-            print("Congratulations, you win!")
+            print(f"Sorry, you lose! The word was {snowman_word}")
+            return
+            
+        # Write a function to congratulate the user for guessing the word before reaching the maximum number of wrong guesses
+        if is_word_guessed(snowman_word, correct_letter_guess_statuses):
+            print(f"Congratulations, you win!")
+            print(f"The word was {snowman_word}")
             return
 
-    print(f"Wrong guesses: {wrong_guesses_list}")
-    print_snowman_graphic(len(wrong_guesses_list))
-    print(f"Sorry, you lose! The word was {snowman_word}")
-    return
+# HELPER FUNCTIONS BELOW
 
 def print_snowman_graphic(wrong_guesses_count):
     """This function prints out the appropriate snowman image 
     depending on the number of wrong guesses the player has made.
     """
-    
     for i in range(SNOWMAN_MAX_WRONG_GUESSES - wrong_guesses_count, SNOWMAN_MAX_WRONG_GUESSES):
+        
         print(SNOWMAN_GRAPHIC[i])
-
 
 def get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list):
     """This function takes the snowman_word_dict and the list of characters 
@@ -70,7 +84,6 @@ def get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list):
     It asks for input from the user of a single character until 
     a valid character is provided and then returns this character.
     """
-
     valid_input = False
     user_input_string = None
 
@@ -89,30 +102,25 @@ def get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list):
             valid_input = True
 
     return user_input_string
-    
 
 def build_letter_status_dict(snowman_word):
     """This function takes snowman_word as input and returns 
     a dictionary with a key-value pair for each letter in 
     snowman_word where the key is the letter and the value is `False`.
     """
-
     letter_status_dict = {}
     for letter in snowman_word:
         letter_status_dict[letter] = False
     return  letter_status_dict
     
-
 def print_word_progress_string(snowman_word, correct_letter_guess_statuses):
     """
     This function takes the snowman_word and snowman_word_dict as input.
     It calls another function to generate a string representation of the  
     user's progress towards guessing snowman_word and prints this string.
     """
-
     progress_string = generate_word_progress_string(snowman_word, correct_letter_guess_statuses)
-    print(progress_string)
-
+    print(f"The word is: {progress_string}")
 
 def generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
     """
@@ -121,7 +129,6 @@ def generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
     guess placements as well as the placements for the letters yet to be 
     guessed.
     """
-
     output_string = ""
     is_not_first_letter = False
 
@@ -138,7 +145,6 @@ def generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
 
     return output_string
 
-
 def is_word_guessed(snowman_word, correct_letter_guess_statuses):
     """
     This function takes the snowman_word and snowman_word_dict as input.
@@ -149,4 +155,13 @@ def is_word_guessed(snowman_word, correct_letter_guess_statuses):
         if not correct_letter_guess_statuses[letter]:
             return False
     return True
+
+def whole_snowman():
+    """
+    This function shows the complete snowman graphic
+    """
+    for i in range(len(SNOWMAN_GRAPHIC)):
+        print(SNOWMAN_GRAPHIC[i])
+
+    print(f"This snowman needs your help!") 
 
