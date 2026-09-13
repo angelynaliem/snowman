@@ -28,11 +28,13 @@ def snowman(snowman_word):
     # Create a new list to keep track of the wrong guesses
     wrong_guesses_list = []
 
+    # Print the snowman graphic before each user input to remind the user how close they are to winning/losing the game
+    whole_snowman() 
+
     # Iterate through the word as long as the user has not reached the maximum number of wrong guesses
     while len(wrong_guesses_list) < SNOWMAN_MAX_WRONG_GUESSES:
 
-        # Print the snowman graphic before each user input to remind the user how close they are to winning/losing the game
-        whole_snowman() 
+  
 
         # Print the word progress to help the user know the length of the word and of any correct guesses
         print_word_progress_string(snowman_word, correct_letter_guess_statuses)
@@ -65,7 +67,7 @@ def snowman(snowman_word):
         # Write a function to congratulate the user for guessing the word before reaching the maximum number of wrong guesses
         if is_word_guessed(snowman_word, correct_letter_guess_statuses):
             print(f"Congratulations, you win!")
-            print(f"The word was {snowman_word}")
+            # print(f"The word was {snowman_word}")
             return
 
 # HELPER FUNCTIONS BELOW

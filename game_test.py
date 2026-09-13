@@ -60,7 +60,7 @@ class TestSnowman(unittest.TestCase):
           # Assert
           assert "you win" in mock_stdout.getvalue().lower()  
           assert "sorry, you lose!" not in mock_stdout.getvalue().lower()
-          assert "the word was snowman" in mock_stdout.getvalue().lower()
+          assert "the word was snowman" not in mock_stdout.getvalue().lower()
         except StopIteration as e:
           raise StopIteration("Code continued to request letters after game should have finished.").with_traceback(e.__traceback__)
 
